@@ -1,4 +1,6 @@
 const constants = require('src/config/constnants');
+const roomService = require('src/services/rooms');
+
 const url = `${constants.DEFAULT_API_URL}/room`;
 
 const get = async function (request, reply) {
@@ -6,6 +8,11 @@ const get = async function (request, reply) {
 };
 
 const post = async function (request, reply) {
+    try {
+        await roomService.create(request.body);
+    }catch (e){
+        console.log(e)
+    }
     reply.send('test post');
 };
 
