@@ -1,4 +1,4 @@
-const { Client } = require('pg')
+const { Client } = require('pg');
 
 const connectionOptions = Object.freeze({
     username: process.env.DATABASE_USERNAME || 'root',
@@ -14,4 +14,4 @@ module.exports = new Client({
     database: connectionOptions.database,
     password: connectionOptions.pwd,
     port: connectionOptions.port,
-})
+});

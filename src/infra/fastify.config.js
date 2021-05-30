@@ -28,7 +28,4 @@ class ApiConfig {
     }
 }
 
-
-
-
 module.exports = new ApiConfig();
