@@ -3,7 +3,7 @@ const apiInfra = require('./infra/fastify.config');
 const logger = require('./infra/logger');
 const pgClient = require('./infra/db.config');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 const start = async () => {
     try {

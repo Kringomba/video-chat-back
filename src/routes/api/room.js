@@ -3,7 +3,7 @@ const roomService = require('src/services/rooms');
 
 const url = `${constants.DEFAULT_API_URL}/room`;
 
-const getValue = async function (request, reply) {
+const getRoom = async function (request, reply) {
     try {
         reply.send(await roomService.findByUUID(request.params.id));
     } catch (e) {
@@ -11,7 +11,7 @@ const getValue = async function (request, reply) {
     }
 };
 
-const postValue = async function (request, reply) {
+const createRoom = async function (request, reply) {
     try {
         reply.send(await roomService.create(request.body));
     } catch (e) {
@@ -55,12 +55,12 @@ module.exports = [
     {
         method: constants.requests.GET,
         url: `${url}/:id`,
-        handler: getValue,
+        handler: getRoom,
     },
     {
         method: constants.requests.POST,
         url,
-        handler: postValue,
+        handler: createRoom,
     },
     {
         method: constants.requests.PUT,

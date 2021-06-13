@@ -2,7 +2,6 @@ const { v4: uuid } = require('uuid');
 const moment = require('moment');
 const base64 = require('js-base64');
 const roomRepository = require('src/repository/rooms');
-const HTTPException = require('http-exception');
 
 class RoomService {
     get _generateRoomID() {
