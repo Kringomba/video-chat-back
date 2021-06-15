@@ -19,7 +19,9 @@ module.exports = class SocketAction {
             socket.emit(events.FAIL_TO_JOIN);
             return;
         }
-
+        socket.on(events.SEND_MESSAGE_TO_SERVER, (event) =>
+            onSendMessage(socket, event)
+        );
         socket.on(events.DISCONNECT, () => onDisconnect(socket, roomId));
     }
 };
@@ -27,4 +29,10 @@ module.exports = class SocketAction {
 const onDisconnect = async (socket, roomId) => {
     console.info('Socket disconnected:', socket.id);
     await userService.decrementCurrentUserCount(roomId);
+};
+
+const onSendMessage = async (socket, message) => {
+    const roomId = socket.handshake.query.roomId;
+    socket.to(roomId).emit(events.SEND_MESSAGE_TO_USER, message);
+    console.log('must to send')
 };
