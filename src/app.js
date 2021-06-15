@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3002;
 const start = async () => {
     try {
         await apiInfra.fastify.listen(PORT, '0.0.0.0');
+        await apiInfra.configSocket();
         await pgClient.connect();
     } catch (err) {
         logger.error(err);

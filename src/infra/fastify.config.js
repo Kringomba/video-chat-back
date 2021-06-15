@@ -2,6 +2,7 @@ const Fastify = require('fastify');
 const plugins = require('src/plugins');
 const decorates = require('src/decorate');
 const routes = require('src/routes');
+const SocketAction = require('../sockets/action');
 
 class ApiConfig {
     constructor() {
@@ -25,6 +26,15 @@ class ApiConfig {
 
     _routes() {
         routes.forEach((route) => this.fastify.route(route));
+    }
+
+    configSocket() {
+        this.fastify.ready((err) => {
+            if (err) {
+                throw err;
+            }
+            new SocketAction(this.fastify.io);
+        });
     }
 }
 

@@ -50,23 +50,40 @@ class RoomService {
     }
 
     async increaseCurrentUserCount(uuid) {
-        const currentRoom = await this.findByUUID(uuid);
-        if (
-            currentRoom.options.max_people_count &&
-            currentRoom.current_people_count + 1 >
-                currentRoom.options.max_people_count
-        ) {
-            throw {
-                code: 406,
-                message: 'Value is not acceptable',
+        try {
+            const currentRoom = await this.findByUUID(uuid);
+            if (
+                currentRoom.options.max_people_count &&
+                currentRoom.current_people_count + 1 >
+                    currentRoom.options.max_people_count
+            ) {
+                return false;
+            }
+            const updatedRoom = {
+                ...currentRoom,
+                current_people_count: currentRoom.current_people_count + 1,
             };
+            await roomRepository.updateValue(updatedRoom);
+            return !!updatedRoom;
+        } catch (e) {
+            return false;
         }
-        const updatedRoom = {
-            ...currentRoom,
-            current_people_count: currentRoom.current_people_count + 1,
-        };
-        await roomRepository.updateValue(updatedRoom);
-        return updatedRoom;
+    }
+
+    async decrementCurrentUserCount(uuid) {
+        try {
+            const currentRoom = await this.findByUUID(uuid);
+
+            const updatedRoom = {
+                ...currentRoom,
+                current_people_count: currentRoom.current_people_count - 1,
+            };
+
+            await roomRepository.updateValue(updatedRoom);
+            return !!updatedRoom;
+        } catch (e) {
+            return false;
+        }
     }
 }
 
