@@ -12,9 +12,11 @@ module.exports = class SocketAction {
 
         const roomId = socket.handshake.query.roomId;
         const res = await userService.increaseCurrentUserCount(roomId);
-
         if (res) {
             socket.join(roomId);
+            socket.broadcast
+                .to(roomId)
+                .emit(events.JOIN_NEW_USER, socket.handshake.query.userPeerId);
         } else {
             socket.emit(events.FAIL_TO_JOIN);
             return;
@@ -34,5 +36,5 @@ const onDisconnect = async (socket, roomId) => {
 const onSendMessage = async (socket, message) => {
     const roomId = socket.handshake.query.roomId;
     socket.to(roomId).emit(events.SEND_MESSAGE_TO_USER, message);
-    console.log('must to send')
+    console.log('must to send');
 };
