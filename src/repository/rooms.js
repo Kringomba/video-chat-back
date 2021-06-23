@@ -28,4 +28,9 @@ module.exports = {
             ],
         });
     },
+    updateActualState() {
+        return client.query({
+            text: 'UPDATE "Rooms" SET is_actual=false WHERE is_actual=true AND expired_at < now();',
+        });
+    },
 };

@@ -1,4 +1,5 @@
 const Fastify = require('fastify');
+const fastifyCron = require('fastify-cron');
 const plugins = require('src/plugins');
 const decorates = require('src/decorate');
 const routes = require('src/routes');
@@ -10,6 +11,7 @@ class ApiConfig {
         this._routes();
         this._plugin();
         this._decorateRequest();
+        this._cron();
     }
 
     _plugin() {
@@ -26,6 +28,18 @@ class ApiConfig {
 
     _routes() {
         routes.forEach((route) => this.fastify.route(route));
+    }
+
+    _cron() {
+        this.fastify.register(fastifyCron, {
+            jobs: [
+                {
+                    cronTime: '0 * * * *',
+                    onTick: () =>
+                        require('../repository/rooms').updateActualState(),
+                },
+            ],
+        });
     }
 
     configSocket() {
